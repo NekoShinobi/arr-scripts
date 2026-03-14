@@ -22,14 +22,14 @@ getArrAppInfo () {
   # Get Arr App information
   if [ -z "$arrUrl" ] || [ -z "$arrApiKey" ]; then
     arrUrlBase="$(cat /config/config.xml | xq | jq -r .Config.UrlBase)"
-    if [ "$arrUrlBase" == "null" ]; then
+    if [ "$arrUrlBase" == "null" ] || [ -z "$arrUrlBase" ]; then
       arrUrlBase=""
     else
       arrUrlBase="/$(echo "$arrUrlBase" | sed "s/\///")"
     fi
-    arrName="$(cat /config/config.xml | xq | jq -r .Config.InstanceName)"
-    arrApiKey="$(cat /config/config.xml | xq | jq -r .Config.ApiKey)"
-    arrPort="$(cat /config/config.xml | xq | jq -r .Config.Port)"
+    arrName="$(cat /config/config.xml | xq -j | jq -r .Config.InstanceName)"
+    arrApiKey="$(cat /config/config.xml | xq -j | jq -r .Config.ApiKey)"
+    arrPort="$(cat /config/config.xml | xq -j | jq -r .Config.Port)"
     arrUrl="http://127.0.0.1:${arrPort}${arrUrlBase}"
   fi
 }
